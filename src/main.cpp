@@ -13,9 +13,9 @@
 // CONFIGURATION - Adjust for your hardware
 // ============================================================
 
-// LED pin - change to match your board
-// ESP32-S3 DevKitC typically uses GPIO 48 for built-in LED
-// The Arduino framework defines LED_BUILTIN for your board
+// LED pin - ESP32-S3 built-in LED is typically GPIO 48
+// Some boards use GPIO 8 or 21 instead
+#define LED_PIN 48
 
 // Serial baud rate
 #define BAUD_RATE 115200
@@ -42,6 +42,9 @@ void printSeparator(const String& title = "") {
 // ============================================================
 
 void setup() {
+  // Wait a moment for serial monitor to open (prevents garbage output)
+  delay(2000);
+  
   // Initialize serial communication
   Serial.begin(BAUD_RATE);
   
@@ -80,8 +83,8 @@ void setup() {
   #endif
 
   // Configure LED pin
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);  // Most boards have active-low LEDs
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);  // Most boards have active-low LEDs
   
   printSeparator("Setup Complete");
 }
@@ -92,10 +95,10 @@ void setup() {
 
 void loop() {
   // Blink built-in LED (slow enough to read serial output)
-  digitalWrite(LED_BUILTIN, LOW);   // Turn LED ON (active-low)
+  digitalWrite(LED_PIN, LOW);   // Turn LED ON (active-low)
   delay(1000);
   
-  digitalWrite(LED_BUILTIN, HIGH);  // Turn LED OFF
+  digitalWrite(LED_PIN, HIGH);  // Turn LED OFF
   delay(1000);
   
   // Print uptime periodically
