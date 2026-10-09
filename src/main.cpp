@@ -13,9 +13,7 @@
 // CONFIGURATION - Adjust for your hardware
 // ============================================================
 
-// LED pin - ESP32-S3 built-in LED is typically GPIO 48
-// Some boards use GPIO 8 or 21 instead
-#define LED_PIN 48
+// LED pin - use built-in LED (Arduino framework defines LED_BUILTIN)
 
 // Serial baud rate
 #define BAUD_RATE 115200
@@ -50,8 +48,8 @@ void setup() {
   Serial.println(F("Board is running"));
   
   // Configure LED pin
-  pinMode(LED_PIN, OUTPUT);
-  digitalWrite(LED_PIN, HIGH);  // Most boards have active-low LEDs
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);  // Most boards have active-low LEDs
 }
 
 // ============================================================
@@ -60,9 +58,9 @@ void setup() {
 
 void loop() {
   // Blink built-in LED
-  digitalWrite(LED_PIN, LOW);   // Turn LED ON (active-low)
+  digitalWrite(LED_BUILTIN, LOW);   // Turn LED ON (active-low)
   delay(500);
   
-  digitalWrite(LED_PIN, HIGH);  // Turn LED OFF
+  digitalWrite(LED_BUILTIN, HIGH);  // Turn LED OFF
   delay(500);
 }
