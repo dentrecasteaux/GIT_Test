@@ -1,0 +1,74 @@
+# ============================================================
+# PlatformIO Git Ignore
+# ============================================================
+
+# ============================================================
+# Build artifacts
+# ============================================================
+.pio/
+.pio_build/
+.pioenvs/
+.piolibdeps/
+.pioinit
+.pioinit.backup
+
+# ============================================================
+# IDE / Editor files (uncomment if needed)
+# ============================================================
+.vscode/settings.json        # Keep platformio.ini; ignore local VS Code settings
+.vscode/launch.json          # Local debug config (ports, etc.)
+.vscode/tasks.json           # Local task config
+
+# ============================================================
+# OS files
+# ============================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ============================================================
+# PlatformIO local config (machine-specific)
+# ============================================================
+# Uncomment if you want to share this file:
+# .pio/build/*/program
+
+# ============================================================
+# Compiled binaries (usually want to ignore these)
+# ============================================================
+*.bin
+*.elf
+*.map
+*.a
+*.so
+*.dylib
+*.exe
+
+# ============================================================
+# Logs
+# ============================================================
+*.log
+platformio.log
+
+# ============================================================
+# Temporary files
+# ============================================================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ============================================================
+# Secrets / Credentials (NEVER commit these)
+# ============================================================
+*.key
+*.pem
+*.crt
+secrets.h
+config_local.h
+.env
+credentials.h
