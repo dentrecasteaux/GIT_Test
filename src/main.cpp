@@ -14,9 +14,8 @@
 // ============================================================
 
 // LED pin - change to match your board
-#ifndef LED_BUILTIN
-  #define LED_BUILTIN 2  // ESP32 default GPIO
-#endif
+// ESP32-S3 DevKitC typically uses GPIO 48 for built-in LED
+// The Arduino framework defines LED_BUILTIN for your board
 
 // Serial baud rate
 #define BAUD_RATE 115200
@@ -46,7 +45,7 @@ void setup() {
   // Initialize serial communication
   Serial.begin(BAUD_RATE);
   
-  // Wait for serial port to be ready (not needed on ESP32, but good practice)
+  // Wait for serial port to be ready
   while (!Serial && millis() < 5000) {
     // Wait for serial port initialization
   }
@@ -61,11 +60,22 @@ void setup() {
   #ifdef ESP32
     Serial.print(F("Chip Model: "));
     Serial.println(ESP.getChipModel());
+    Serial.print(F("Chip Revision: "));
+    Serial.println(ESP.getChipRevision());
     Serial.print(F("CPU Freq: "));
     Serial.print(ESP.getCpuFreqMHz());
     Serial.println(F(" MHz"));
+    Serial.print(F("Flash Size: "));
+    Serial.print(ESP.getFlashChipSize() / 1024 / 1024);
+    Serial.println(F(" MB"));
+    Serial.print(F("PSRAM Size: "));
+    Serial.print(ESP.getPsramSize() / 1024 / 1024);
+    Serial.println(F(" MB"));
     Serial.print(F("Free Heap: "));
     Serial.print(ESP.getFreeHeap());
+    Serial.println(F(" bytes"));
+    Serial.print(F("Free PSRAM: "));
+    Serial.print(ESP.getFreePsram());
     Serial.println(F(" bytes"));
   #endif
 
@@ -103,6 +113,13 @@ void loop() {
       Serial.print(ESP.getFreeHeap());
     #else
       Serial.print(freeMemory());
+    #endif
+    Serial.print(F(" | "));
+    Serial.print(F("Free PSRAM: "));
+    #ifdef ESP32
+      Serial.print(ESP.getFreePsram());
+    #else
+      Serial.print(0);
     #endif
     Serial.println(F(" bytes"));
   }
