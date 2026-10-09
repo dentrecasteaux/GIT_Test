@@ -91,14 +91,12 @@ void setup() {
 // ============================================================
 
 void loop() {
-  // Blink built-in LED
+  // Blink built-in LED (slow enough to read serial output)
   digitalWrite(LED_BUILTIN, LOW);   // Turn LED ON (active-low)
-  Serial.println(F("LED ON"));
-  delay(500);
+  delay(1000);
   
   digitalWrite(LED_BUILTIN, HIGH);  // Turn LED OFF
-  Serial.println(F("LED OFF"));
-  delay(500);
+  delay(1000);
   
   // Print uptime periodically
   static unsigned long lastPrint = 0;
