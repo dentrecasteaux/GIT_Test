@@ -42,51 +42,16 @@ void printSeparator(const String& title = "") {
 // ============================================================
 
 void setup() {
-  // Wait a moment for serial monitor to open (prevents garbage output)
-  delay(2000);
-  
-  // Initialize serial communication
+  // Initialize serial communication FIRST (no delay)
   Serial.begin(BAUD_RATE);
   
-  // Wait for serial port to be ready
-  while (!Serial && millis() < 5000) {
-    // Wait for serial port initialization
-  }
-
-  printSeparator("System Startup");
+  // Print immediately - if this doesn't show, the board is crashing
+  Serial.println(F("HELLO"));
+  Serial.println(F("Board is running"));
   
-  // Print system info
-  Serial.print(F("Uptime: "));
-  Serial.print(millis());
-  Serial.println(F(" ms"));
-  
-  #ifdef ESP32
-    Serial.print(F("Chip Model: "));
-    Serial.println(ESP.getChipModel());
-    Serial.print(F("Chip Revision: "));
-    Serial.println(ESP.getChipRevision());
-    Serial.print(F("CPU Freq: "));
-    Serial.print(ESP.getCpuFreqMHz());
-    Serial.println(F(" MHz"));
-    Serial.print(F("Flash Size: "));
-    Serial.print(ESP.getFlashChipSize() / 1024 / 1024);
-    Serial.println(F(" MB"));
-    Serial.print(F("PSRAM Size: "));
-    Serial.print(ESP.getPsramSize() / 1024 / 1024);
-    Serial.println(F(" MB"));
-    Serial.print(F("Free Heap: "));
-    Serial.print(ESP.getFreeHeap());
-    Serial.println(F(" bytes"));
-    Serial.print(F("Free PSRAM: "));
-    Serial.print(ESP.getFreePsram());
-    Serial.println(F(" bytes"));
-  #endif
-
   // Configure LED pin
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, HIGH);  // Most boards have active-low LEDs
-  
-  printSeparator("Setup Complete");
 }
 
 // ============================================================
@@ -94,34 +59,10 @@ void setup() {
 // ============================================================
 
 void loop() {
-  // Blink built-in LED (slow enough to read serial output)
+  // Blink built-in LED
   digitalWrite(LED_PIN, LOW);   // Turn LED ON (active-low)
-  delay(1000);
+  delay(500);
   
   digitalWrite(LED_PIN, HIGH);  // Turn LED OFF
-  delay(1000);
-  
-  // Print uptime periodically
-  static unsigned long lastPrint = 0;
-  if (millis() - lastPrint >= 5000) {
-    lastPrint = millis();
-    printSeparator("Heartbeat");
-    Serial.print(F("Uptime: "));
-    Serial.print(millis() / 1000);
-    Serial.print(F("s | "));
-    Serial.print(F("Free Heap: "));
-    #ifdef ESP32
-      Serial.print(ESP.getFreeHeap());
-    #else
-      Serial.print(freeMemory());
-    #endif
-    Serial.print(F(" | "));
-    Serial.print(F("Free PSRAM: "));
-    #ifdef ESP32
-      Serial.print(ESP.getFreePsram());
-    #else
-      Serial.print(0);
-    #endif
-    Serial.println(F(" bytes"));
-  }
+  delay(500);
 }
