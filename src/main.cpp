@@ -19,11 +19,12 @@ bool psram_works = false;
 void setup() {
     delay(100);
     
-    // Use only baud parameter for USB CDC serial
+    // Initialize Serial - USB CDC on ESP32-S3
     Serial.begin(115200);
     
+    // Wait for serial port with longer timeout (USB CDC takes time)
     unsigned long start = millis();
-    while (!Serial && (millis() - start < 2000)) {
+    while (!Serial && (millis() - start < 5000)) {
         delay(10);
     }
     
@@ -31,27 +32,21 @@ void setup() {
     Serial.println("  ESP32-S3 N16R8 PSRAM Test + WS2812");
     Serial.println("========================================\n");
     
-    // Initialize WS2812
     pixels.begin();
     pixels.show();
     
     Serial.println("WS2812 initialized on GPIO 48");
     
-    // Test PSRAM - bypass psramFound() check since generic board
-    // doesn't know about our N16R8's PSRAM
     Serial.println("\n--- PSRAM Test ---\n");
     
-    // Try to allocate from PSRAM directly
     uint32_t* psram_ptr = (uint32_t*)ps_malloc(4096);
     if (psram_ptr) {
         Serial.println("PSRAM allocation: SUCCESS");
         
-        // Write test pattern
         for (int i = 0; i < 1024; i++) {
             psram_ptr[i] = 0xDeadBeef | (i << 8);
         }
         
-        // Verify
         bool verify_ok = true;
         for (int i = 0; i < 1024; i++) {
             if (psram_ptr[i] != (0xDeadBeef | (i << 8))) {
@@ -62,12 +57,9 @@ void setup() {
         
         if (verify_ok) {
             Serial.println("PSRAM verify: SUCCESS - PSRAM working!");
-            
-            // Get actual size
             psram_size = esp_spiram_get_size();
             Serial.printf("PSRAM Size: %d bytes (%.2f MB)\n", 
                 psram_size, psram_size / (1024.0 * 1024.0));
-            
             psram_works = true;
         } else {
             Serial.println("PSRAM verify: FAILED");
@@ -82,7 +74,6 @@ void setup() {
 }
 
 void loop() {
-    // WS2812 color cycle
     for (int i = 0; i < 3; i++) {
         pixels.setPixelColor(0, pixels.Color(255, 0, 0));
         pixels.show();
@@ -113,7 +104,6 @@ void loop() {
     }
     Serial.println("[LED] Blue");
     
-    // Show PSRAM status with white
     if (psram_works) {
         pixels.setPixelColor(0, pixels.Color(255, 255, 255));
         pixels.show();
