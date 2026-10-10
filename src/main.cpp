@@ -19,7 +19,8 @@ bool psram_works = false;
 void setup() {
     delay(100);
     
-    Serial.begin(115200, SERIAL_8N1, -1, -1);
+    // Use only baud parameter for USB CDC serial
+    Serial.begin(115200);
     
     unsigned long start = millis();
     while (!Serial && (millis() - start < 2000)) {
