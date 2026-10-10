@@ -10,6 +10,7 @@
             "includePath": [
                 "/Users/paulrichards/Documents/Projects/GIT_Test/include",
                 "/Users/paulrichards/Documents/Projects/GIT_Test/src",
+                "/Users/paulrichards/Documents/Projects/GIT_Test/.pio/libdeps/esp32-s3/Adafruit NeoPixel",
                 "/Users/paulrichards/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                 "/Users/paulrichards/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                 "/Users/paulrichards/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
@@ -249,6 +250,7 @@
                 "path": [
                     "/Users/paulrichards/Documents/Projects/GIT_Test/include",
                     "/Users/paulrichards/Documents/Projects/GIT_Test/src",
+                    "/Users/paulrichards/Documents/Projects/GIT_Test/.pio/libdeps/esp32-s3/Adafruit NeoPixel",
                     "/Users/paulrichards/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/newlib/platform_include",
                     "/Users/paulrichards/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include",
                     "/Users/paulrichards/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32s3/include/freertos/include/esp_additions/freertos",
