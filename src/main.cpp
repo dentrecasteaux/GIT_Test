@@ -37,47 +37,45 @@ void setup() {
     
     Serial.println("WS2812 initialized on GPIO 48");
     
-    // Test PSRAM
+    // Test PSRAM - bypass psramFound() check since generic board
+    // doesn't know about our N16R8's PSRAM
     Serial.println("\n--- PSRAM Test ---\n");
     
-    if (psramFound()) {
-        psram_size = esp_spiram_get_size();
-        Serial.printf("PSRAM Found: %d bytes (%.2f MB)\n", 
-            psram_size, psram_size / (1024.0 * 1024.0));
+    // Try to allocate from PSRAM directly
+    uint32_t* psram_ptr = (uint32_t*)ps_malloc(4096);
+    if (psram_ptr) {
+        Serial.println("PSRAM allocation: SUCCESS");
         
-        // Test read/write
-        uint32_t* psram_ptr = (uint32_t*)ps_malloc(4096);
-        if (psram_ptr) {
-            Serial.println("PSRAM allocation: SUCCESS");
-            
-            // Write test pattern
-            for (int i = 0; i < 1024; i++) {
-                psram_ptr[i] = 0xDeadBeef | (i << 8);
-            }
-            
-            // Verify
-            bool verify_ok = true;
-            for (int i = 0; i < 1024; i++) {
-                if (psram_ptr[i] != (0xDeadBeef | (i << 8))) {
-                    verify_ok = false;
-                    break;
-                }
-            }
-            
-            if (verify_ok) {
-                Serial.println("PSRAM verify: SUCCESS - PSRAM working!");
-                psram_works = true;
-            } else {
-                Serial.println("PSRAM verify: FAILED");
-            }
-            
-            free(psram_ptr);
-        } else {
-            Serial.println("PSRAM allocation: FAILED - no memory available");
+        // Write test pattern
+        for (int i = 0; i < 1024; i++) {
+            psram_ptr[i] = 0xDeadBeef | (i << 8);
         }
+        
+        // Verify
+        bool verify_ok = true;
+        for (int i = 0; i < 1024; i++) {
+            if (psram_ptr[i] != (0xDeadBeef | (i << 8))) {
+                verify_ok = false;
+                break;
+            }
+        }
+        
+        if (verify_ok) {
+            Serial.println("PSRAM verify: SUCCESS - PSRAM working!");
+            
+            // Get actual size
+            psram_size = esp_spiram_get_size();
+            Serial.printf("PSRAM Size: %d bytes (%.2f MB)\n", 
+                psram_size, psram_size / (1024.0 * 1024.0));
+            
+            psram_works = true;
+        } else {
+            Serial.println("PSRAM verify: FAILED");
+        }
+        
+        free(psram_ptr);
     } else {
-        Serial.println("PSRAM not found or not initialized");
-        Serial.println("Check board configuration for N16R8 variant");
+        Serial.println("PSRAM allocation: FAILED - no PSRAM available");
     }
     
     Serial.println("\n--- Starting LED cycle ---\n");
